@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "9fd8ed73-ff76-43cd-933b-b7642a774d9b.fid-2106f6ad_18acc1505c5_-22c2",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              28.969395538295533,
+              47.74217280511266
+            ],
+            [
+              28.97753528272675,
+              47.75472452602401
+            ],
+            [
+              28.99087255568479,
+              47.754656636296694
+            ]
+          ]
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "roadindex": "R20",
+        "roadcategory": "R"
+      }
+    }
+  ],
+  "totalFeatures": "unknown",
+  "numberReturned": 1,
+  "timeStamp": "2023-09-25T12:03:51.646Z",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::3857"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.15923281149145, 47.23610343594077]
+      },
+      "properties": {
+        "pane": "markerPane",
+        "shape": "Marker",
+        "draggable": true
+      }
+    }
+  ]
+}

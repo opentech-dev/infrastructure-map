@@ -1,0 +1,23 @@
+services:
+  postgres:
+    container_name: iframap-postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inframap
+    ports:
+      - 5433:5432
+    networks:
+      - inframap
+    volumes:
+      - ./.data:/var/lib/postgresql/data
+      # - postgres_database:/var/lib/postgresql/data:Z
+
+networks:
+  inframap:
+    name: inframap
+
+# volumes:
+#   postgres_database:
+#     external: true

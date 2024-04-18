@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "global_layers",
+  "info": {
+    "singularName": "global-layer",
+    "pluralName": "global-layers",
+    "displayName": "Global layer",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "geojson": {
+      "type": "customField",
+      "customField": "plugin::strapi-leaflet-geoman.geojson"
+    }
+  }
+}

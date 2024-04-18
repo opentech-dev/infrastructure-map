@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "9fd8ed73-ff76-43cd-933b-b7642a774d9b.fid-2106f6ad_18acc1505c5_20b",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              28.25745778423388,
+              48.177916273277816
+            ],
+            [
+              28.262805522076086,
+              48.18961477437157
+            ],
+            [
+              28.24389574781275,
+              48.215672710045595
+            ]
+          ]
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "roadindex": "R14.3",
+        "roadcategory": "R"
+      }
+    }
+  ]
+}

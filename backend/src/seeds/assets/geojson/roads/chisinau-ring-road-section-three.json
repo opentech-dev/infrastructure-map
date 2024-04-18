@@ -1,0 +1,47 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "9fd8ed73-ff76-43cd-933b-b7642a774d9b.fid-2106f6ad_18acb9ac4c0_-13b8",
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              28.77641519954449,
+              47.050345726101796
+            ],
+            [
+              28.834623334856683,
+              47.08702163716286
+            ],
+            [
+              28.855902582419443,
+              47.11122694764197
+            ],
+            [
+              28.854600307063823,
+              47.11303123305181
+            ]
+           
+          ]
+        ]
+      },
+      "geometry_name": "geom",
+      "properties": {
+        "roadindex": "chisinau ring road",
+        "roadcategory": "M"
+      }
+    }
+  ],
+  "totalFeatures": "unknown",
+  "numberReturned": 1,
+  "timeStamp": "2023-09-25T09:17:45.671Z",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::3857"
+    }
+  }
+}

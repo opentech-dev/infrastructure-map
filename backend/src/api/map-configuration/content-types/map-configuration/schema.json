@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "map_configurations",
+  "info": {
+    "singularName": "map-configuration",
+    "pluralName": "map-configurations",
+    "displayName": "Map Configuration",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "latitude": {
+      "type": "float"
+    },
+    "longitute": {
+      "type": "float"
+    },
+    "default_zoom": {
+      "type": "integer"
+    },
+    "min_zoom": {
+      "type": "integer"
+    },
+    "max_zoom": {
+      "type": "integer"
+    },
+    "tile_url": {
+      "type": "text"
+    },
+    "tile_attribution": {
+      "type": "string"
+    },
+    "tile_access_token": {
+      "type": "string"
+    }
+  }
+}

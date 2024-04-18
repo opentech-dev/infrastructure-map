@@ -1,0 +1,83 @@
+{
+  "kind": "collectionType",
+  "collectionName": "infrastructures",
+  "info": {
+    "singularName": "infrastructure",
+    "pluralName": "infrastructures",
+    "displayName": "Infrastructure",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext",
+      "required": false
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "slug": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "filters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::filter.filter",
+      "mappedBy": "infrastructure"
+    },
+    "top_filters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::top-filter.top-filter",
+      "mappedBy": "infrastructure"
+    },
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 1,
+      "min": 0
+    }
+  }
+}
