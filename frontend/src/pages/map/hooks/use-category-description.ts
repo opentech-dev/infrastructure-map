@@ -108,11 +108,10 @@ const useCategoryDescription = () => {
                 return;
               }
               if (layer instanceof L.Marker) {
-                if (
-                  layer.feature?.properties?.shape === "Marker" &&
-                  (filterItem.attributes.marker_icon?.data?.attributes?.url ||
-                    filter.attributes.icon?.data?.attributes?.url)
-                ) {
+                const url =
+                  filterItem.attributes?.marker_icon?.data?.attributes?.url ||
+                  filter?.attributes?.icon?.data?.attributes?.url;
+                if (layer.feature?.properties?.shape === "Marker" && url) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
                       L.latLng(
@@ -121,11 +120,7 @@ const useCategoryDescription = () => {
                       ),
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
-                        src:
-                          baseUrl +
-                          (filterItem.attributes.marker_icon.data.attributes
-                            .url ||
-                            filter.attributes.icon?.data?.attributes?.url),
+                        src: baseUrl + url,
                         label: filterItem.attributes.label,
                       }),
                       "bg-red-500 rounded-full flex justify-center items-center"
@@ -251,11 +246,11 @@ const useCategoryDescription = () => {
                 return;
               }
               if (layer instanceof L.Marker) {
-                if (
-                  layer.feature?.properties?.shape === "Marker" &&
-                  (filterItem.attributes.marker_icon?.data?.attributes?.url ||
-                    filter.attributes.icon?.data?.attributes?.url)
-                ) {
+                const url =
+                  filterItem.attributes?.marker_icon?.data?.attributes?.url ||
+                  filter?.attributes?.icon?.data?.attributes?.url;
+
+                if (layer.feature?.properties?.shape === "Marker" && url) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
                       L.latLng(
@@ -264,11 +259,7 @@ const useCategoryDescription = () => {
                       ),
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
-                        src:
-                          baseUrl +
-                          (filterItem.attributes.marker_icon.data.attributes
-                            .url ||
-                            filter.attributes.icon?.data?.attributes?.url),
+                        src: baseUrl + url,
                         label: filterItem.attributes.label,
                       }),
                       `rounded-full flex justify-center items-center`
