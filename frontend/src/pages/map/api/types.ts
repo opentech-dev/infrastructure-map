@@ -106,6 +106,9 @@ export interface FilterItemsView {
     images: {
       data: StrapiImage[];
     };
+    marker_icon: {
+      data: StrapiImage;
+    };
   };
 }
 

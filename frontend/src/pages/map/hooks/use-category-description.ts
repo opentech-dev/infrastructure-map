@@ -110,7 +110,8 @@ const useCategoryDescription = () => {
               if (layer instanceof L.Marker) {
                 if (
                   layer.feature?.properties?.shape === "Marker" &&
-                  filter.attributes.icon?.data?.attributes?.url
+                  (filterItem.attributes.marker_icon?.data?.attributes?.url ||
+                    filter.attributes.icon?.data?.attributes?.url)
                 ) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
@@ -121,7 +122,10 @@ const useCategoryDescription = () => {
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
                         src:
-                          baseUrl + filter.attributes.icon.data.attributes.url,
+                          baseUrl +
+                          (filterItem.attributes.marker_icon.data.attributes
+                            .url ||
+                            filter.attributes.icon?.data?.attributes?.url),
                         label: filterItem.attributes.label,
                       }),
                       "bg-red-500 rounded-full flex justify-center items-center"
@@ -149,7 +153,7 @@ const useCategoryDescription = () => {
   };
 
   const handleItemClick = (
-    item: FilterItemsView, 
+    item: FilterItemsView
     // index = -1
   ) => {
     setSelectedItem(item);
@@ -249,7 +253,8 @@ const useCategoryDescription = () => {
               if (layer instanceof L.Marker) {
                 if (
                   layer.feature?.properties?.shape === "Marker" &&
-                  filter.attributes?.icon?.data?.attributes?.url
+                  (filterItem.attributes.marker_icon?.data?.attributes?.url ||
+                    filter.attributes.icon?.data?.attributes?.url)
                 ) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
@@ -260,7 +265,10 @@ const useCategoryDescription = () => {
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
                         src:
-                          baseUrl + filter.attributes.icon.data.attributes.url,
+                          baseUrl +
+                          (filterItem.attributes.marker_icon.data.attributes
+                            .url ||
+                            filter.attributes.icon?.data?.attributes?.url),
                         label: filterItem.attributes.label,
                       }),
                       `rounded-full flex justify-center items-center`
