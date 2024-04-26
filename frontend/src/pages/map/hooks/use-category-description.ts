@@ -1,7 +1,7 @@
 import useLanguage from "@/hooks/use-language";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useGetFiltersQuery } from "../api";
+import { useGetFiltersQuery, useGetInfrastructuresQuery } from "../api";
 import { useSignals } from "@preact/signals-react/runtime";
 import { baseUrl, centerOfMd } from "@/lib/config";
 import { FilterItemsView } from "../api/types";
@@ -27,9 +27,17 @@ const useCategoryDescription = () => {
     null
   );
 
-  const map = useMap();
-
   const activeParam = params.get("layer") || "roads";
+
+  const { data: infrastructures } = useGetInfrastructuresQuery(language.value);
+
+  const infrastructure = useMemo(() => {
+    return infrastructures?.data.find(
+      (item) => item.attributes.slug === activeParam
+    );
+  }, [infrastructures, activeParam]);
+
+  const map = useMap();
 
   const activeCategory = params.get("category");
 
@@ -311,6 +319,7 @@ const useCategoryDescription = () => {
     data,
     activeParam,
     activeCategories,
+    infrastructure,
   };
 };
 
