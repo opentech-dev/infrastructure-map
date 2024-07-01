@@ -26,27 +26,68 @@ export default {
    */
   async bootstrap({ strapi }: { strapi: Strapi }) {
     /* add locales */
-    await addLocales(strapi);
+    try {
+      console.log('Add Locales')
+      await addLocales(strapi);
+    } catch(error) {
+      console.log('Add Locales Error')
+      console.error(error)
+    }
+
     /* -- */
 
     /* Map Configuration */
+    try {
+      console.log('Add setMapConfiguration')
     await setMapConfiguration(strapi);
+    } catch(error){
+      console.log('setMapConfiguration Error')
+      console.error(error)
+    }
     /* -- */
 
     /* Map Layout */
-    await setMapLayout(strapi);
+    try {
+      console.log('Add setMapLayout')
+      await setMapLayout(strapi);
+    } catch(error){
+      console.log('setMapLayout Error')
+      console.error(error)
+    }
     /* -- */
 
     /* Map Infrastructures */
-    const infrData = await setInfrastructures(strapi);
+    let infrData
+    try {
+      console.log('Add setInfrastructures')
+      infrData = await setInfrastructures(strapi);
+    } catch(error){
+      console.log('setInfrastructures Error')
+      console.error(error)
+    }
     /* -- */
 
     /* Map Infrastructures */
-    setGlobalLayers(strapi);
+    try {
+      console.log('Add setGlobalLayers')
+      await setGlobalLayers(strapi);
+    } catch(error){
+      console.log('setGlobalLayers Error')
+      console.error(error)
+    }
     /* -- */
 
     /* Set Filters */
-    const result = await setFilterItems(strapi);
+
+    let result;
+    try {
+      console.log('Add setFilterItems')
+      result = await setFilterItems(strapi);
+    } catch(error){
+      console.log('setFilterItems Error')
+      console.error(error)
+    }
+
 
     if (result && infrData) {
       const data = await setFilters(strapi, infrData, result);
