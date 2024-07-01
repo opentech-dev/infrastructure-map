@@ -1,7 +1,7 @@
 import useLanguage from "@/hooks/use-language";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useGetFiltersQuery } from "../api";
+import { useGetFiltersQuery, useGetInfrastructuresQuery } from "../api";
 import { useSignals } from "@preact/signals-react/runtime";
 import { baseUrl, centerOfMd } from "@/lib/config";
 import { FilterItemsView } from "../api/types";
@@ -27,9 +27,17 @@ const useCategoryDescription = () => {
     null
   );
 
-  const map = useMap();
-
   const activeParam = params.get("layer") || "roads";
+
+  const { data: infrastructures } = useGetInfrastructuresQuery(language.value);
+
+  const infrastructure = useMemo(() => {
+    return infrastructures?.data.find(
+      (item) => item.attributes.slug === activeParam
+    );
+  }, [infrastructures, activeParam]);
+
+  const map = useMap();
 
   const activeCategory = params.get("category");
 
@@ -108,10 +116,10 @@ const useCategoryDescription = () => {
                 return;
               }
               if (layer instanceof L.Marker) {
-                if (
-                  layer.feature?.properties?.shape === "Marker" &&
-                  filter.attributes.icon?.data?.attributes?.url
-                ) {
+                const url =
+                  filterItem.attributes?.marker_icon?.data?.attributes?.url ||
+                  filter?.attributes?.icon?.data?.attributes?.url;
+                if (layer.feature?.properties?.shape === "Marker" && url) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
                       L.latLng(
@@ -120,8 +128,7 @@ const useCategoryDescription = () => {
                       ),
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
-                        src:
-                          baseUrl + filter.attributes.icon.data.attributes.url,
+                        src: baseUrl + url,
                         label: filterItem.attributes.label,
                       }),
                       "bg-red-500 rounded-full flex justify-center items-center"
@@ -149,7 +156,7 @@ const useCategoryDescription = () => {
   };
 
   const handleItemClick = (
-    item: FilterItemsView, 
+    item: FilterItemsView
     // index = -1
   ) => {
     setSelectedItem(item);
@@ -247,10 +254,11 @@ const useCategoryDescription = () => {
                 return;
               }
               if (layer instanceof L.Marker) {
-                if (
-                  layer.feature?.properties?.shape === "Marker" &&
-                  filter.attributes?.icon?.data?.attributes?.url
-                ) {
+                const url =
+                  filterItem.attributes?.marker_icon?.data?.attributes?.url ||
+                  filter?.attributes?.icon?.data?.attributes?.url;
+
+                if (layer.feature?.properties?.shape === "Marker" && url) {
                   if (layer?.feature?.geometry?.coordinates) {
                     const marker = createMarker(
                       L.latLng(
@@ -259,8 +267,7 @@ const useCategoryDescription = () => {
                       ),
                       ICON_TEMPLATES.default({
                         color: filter.attributes.color || "#cccccc",
-                        src:
-                          baseUrl + filter.attributes.icon.data.attributes.url,
+                        src: baseUrl + url,
                         label: filterItem.attributes.label,
                       }),
                       `rounded-full flex justify-center items-center`
@@ -312,6 +319,7 @@ const useCategoryDescription = () => {
     data,
     activeParam,
     activeCategories,
+    infrastructure,
   };
 };
 

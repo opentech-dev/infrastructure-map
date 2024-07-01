@@ -92,7 +92,12 @@ export const mapAPI = reduxAPI.injectEndpoints({
             queryString.stringify(
               {
                 locale,
-                populate: ["icon", "filter_items", "filter_items.images"],
+                populate: [
+                  "icon",
+                  "filter_items",
+                  "filter_items.images",
+                  "filter_items.marker_icon",
+                ],
               },
               { arrayFormat: "none" }
             ),

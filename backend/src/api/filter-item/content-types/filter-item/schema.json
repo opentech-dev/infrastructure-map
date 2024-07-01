@@ -80,6 +80,19 @@
       },
       "type": "boolean",
       "default": true
+    },
+    "marker_icon": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": false
     }
   }
 }

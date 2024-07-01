@@ -993,6 +993,12 @@ export interface ApiFilterItemFilterItem extends Schema.CollectionType {
         };
       }> &
       Attribute.DefaultTo<true>;
+    marker_icon: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

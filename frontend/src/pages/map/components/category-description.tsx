@@ -19,6 +19,7 @@ export type ForwRefHandle = {
 };
 
 type DescriptionSidebarProps = {
+  icon?: string;
   data?: FiltersData;
   selectedItem: FilterItemsView | null;
   handleBack: () => void;
@@ -35,14 +36,13 @@ const DescriptionSidebar: FC<DescriptionSidebarProps> = memo(
     handleBack,
     handleItemClick,
     activeParam,
+    icon = "",
   }) => {
     return (
       !isEmpty(data?.data) && (
         <DetailsBox
           titleId={`infrastructure.id_${activeParam}`}
-          icon={
-            baseUrl + data?.data?.[0]?.attributes?.icon?.data?.attributes?.url
-          }
+          icon={baseUrl + icon}
           hasBackButton={!!selectedItem}
           className="z-[999] h-full"
           onClick={handleBack}
@@ -108,6 +108,7 @@ const CategoryDescription: React.ForwardRefRenderFunction<
     activeParam,
     activeCategories,
     data,
+    infrastructure,
   } = useCategoryDescription();
 
   return (
@@ -120,6 +121,7 @@ const CategoryDescription: React.ForwardRefRenderFunction<
         activeParam={activeParam}
         activeCategories={activeCategories as string[]}
         data={data}
+        icon={infrastructure?.attributes.icon.data.attributes.url}
       />
     </>
   );

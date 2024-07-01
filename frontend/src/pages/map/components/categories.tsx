@@ -29,12 +29,12 @@ const Categories = () => {
               id={`category-${item.id}`}
               data-js="enabled"
               color={item.attributes.color}
-              fill={item.attributes.color}
+              fill="#fff"
               style={{
                 opacity: isFilled(item.attributes.name) ? 1 : 0.4,
                 backgroundColor: item.attributes.color,
                 border: `1px solid ${item.attributes.color}`,
-                fill: item.attributes.color,
+                fill: "#fff",
               }}
             />
             <p

@@ -1,11 +1,11 @@
 import { LatLngExpression } from "leaflet";
 
 export const baseUrl =
-  import.meta.env.REACT_APP_API_ENDPOINT || "http://localhost:1338";
+  import.meta.env.REACT_APP_API_ENDPOINT || "http://localhost:1337";
 
 export const strapiToken =
   import.meta.env.REACT_APP_STRAPI_TOEKN ||
-  "2920c9e538ed93bdb0e1d4aacdcb588c385891c0d82848e642aa582bf4016cba0f11862806b23f97a8c3348702dbc56c97c71ab105b604e0aff35877d59c08957ab4288d59aed063842d62dc1752b1b270ab05f40ce1d0a838f61523ebbb2e4fda49c9218ca4c04b3790318b1195bf9533ea51bc58fd8629eb97e0bcd5096f80";
+  "26ee037cf66ba113e0273b00baf2c249538e12effb2d01c6bc0296c62bfd4b6362637634e5dab11fa27815701d13dc2cf67c8debdb161e57b8b9742e7bbd9a0ad04b9f9b182b659472004081c8cc825b4f9efbdefba161e2c6460ac6e78a2d1dc29a5c61fd3aa9b9ef8d94ebda922d34deba56cd3db8726e0669b496bfe15f7f";
 
 export const centerOfMd = [
   46.78501604269256, 28.729248046875004,
