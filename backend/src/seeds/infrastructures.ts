@@ -272,26 +272,47 @@ Accesul la servicii este realizat prin intermediul biletelor de călătorie, car
   },
 ];
 
+const MAX_RETRIES = 3; // You can increase or decrease based on requirements
+
+// Helper function for retry mechanism
+const retry = async (fn, retries = MAX_RETRIES) => {
+  let lastError;
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      console.error(`Attempt ${i+1} failed: ${err.message}`);
+      lastError = err;
+      if (err.code !== 'ER_LOCK_DEADLOCK') throw err; // Re-throw if it's not a deadlock error
+    }
+  }
+  throw lastError; // If all retries fail, throw the last error
+}
+
 export const setInfrastructures = async (strapi: Strapi) => {
-  const infrastructureCount = await strapi.entityService.count(
-    "api::infrastructure.infrastructure"
+  const infrastructureCount = await retry(() => 
+    strapi.entityService.count('api::infrastructure.infrastructure')
   );
 
   if (!infrastructureCount) {
-    const engInfrastructures = await Promise.all(
-      infrastructures_en.map((item) =>
-        strapi.entityService.create("api::infrastructure.infrastructure", {
-          data: item,
-        })
+    const engInfrastructures = await retry(() => 
+      Promise.all(
+        infrastructures_en.map((item) =>
+          strapi.entityService.create("api::infrastructure.infrastructure", {
+            data: item,
+          })
+        )
       )
     );
 
-    const roInfrastructures = await Promise.all(
-      infrastructures_ro.map((item, i) =>
-        strapi.entityService.create("api::infrastructure.infrastructure", {
-          data: { ...item, localizations: [engInfrastructures[i].id] },
-          populate: ["localizations"],
-        })
+    const roInfrastructures = await retry(() => 
+      Promise.all(
+        infrastructures_ro.map((item, i) =>
+          strapi.entityService.create("api::infrastructure.infrastructure", {
+            data: { ...item, localizations: [engInfrastructures[i].id] },
+            populate: ["localizations"],
+          })
+        )
       )
     );
 
