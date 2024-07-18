@@ -34,7 +34,7 @@ export default {
       { fn: setFilterItems, args: [strapi], message: 'Add setFilterItems', saveResult: 'result' }
     ];
 
-    const results = {};
+    const results: {result?:any, infrData?:any} = {};
 
     for (const task of tasks) {
       try {
@@ -50,7 +50,7 @@ export default {
     }
 
     /* Set Filters */
-    if (results.result && results.infrData) {
+    if (results?.result && results.infrData) {
       try {
         console.log('Add setFilters');
         const data = await setFilters(strapi, results.infrData, results.result);
