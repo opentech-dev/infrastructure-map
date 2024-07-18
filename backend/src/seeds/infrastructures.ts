@@ -282,6 +282,7 @@ const retry = async (fn, retries = MAX_RETRIES) => {
       return await fn();
     } catch (err) {
       console.error(`Attempt ${i+1} failed: ${err.message}`);
+      console.log(err);
       lastError = err;
       if (err.code !== 'ER_LOCK_DEADLOCK') throw err; // Re-throw if it's not a deadlock error
     }
