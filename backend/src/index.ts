@@ -25,74 +25,43 @@ export default {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }: { strapi: Strapi }) {
-    /* add locales */
-    try {
-      console.log('Add Locales')
-      await addLocales(strapi);
-    } catch(error) {
-      console.log('Add Locales Error')
-      console.error(error)
-    }
+    const tasks = [
+      { fn: addLocales, args: [strapi], message: 'Add Locales' },
+      { fn: setMapConfiguration, args: [strapi], message: 'Add setMapConfiguration' },
+      { fn: setMapLayout, args: [strapi], message: 'Add setMapLayout' },
+      { fn: setInfrastructures, args: [strapi], message: 'Add setInfrastructures', saveResult: 'infrData' },
+      { fn: setGlobalLayers, args: [strapi], message: 'Add setGlobalLayers' },
+      { fn: setFilterItems, args: [strapi], message: 'Add setFilterItems', saveResult: 'result' }
+    ];
 
-    /* -- */
+    const results = {};
 
-    /* Map Configuration */
-    try {
-      console.log('Add setMapConfiguration')
-    await setMapConfiguration(strapi);
-    } catch(error){
-      console.log('setMapConfiguration Error')
-      console.error(error)
+    for (const task of tasks) {
+      try {
+        console.log(task.message);
+        const result = await task.fn.call(null, ...task.args);
+        if (task.saveResult) {
+          results[task.saveResult] = result;
+        }
+      } catch (error) {
+        console.log(`${task.message} Error`);
+        console.error(error);
+      }
     }
-    /* -- */
-
-    /* Map Layout */
-    try {
-      console.log('Add setMapLayout')
-      await setMapLayout(strapi);
-    } catch(error){
-      console.log('setMapLayout Error')
-      console.error(error)
-    }
-    /* -- */
-
-    /* Map Infrastructures */
-    let infrData
-    try {
-      console.log('Add setInfrastructures')
-      infrData = await setInfrastructures(strapi);
-    } catch(error){
-      console.log('setInfrastructures Error')
-      console.error(error)
-    }
-    /* -- */
-
-    /* Map Infrastructures */
-    try {
-      console.log('Add setGlobalLayers')
-      await setGlobalLayers(strapi);
-    } catch(error){
-      console.log('setGlobalLayers Error')
-      console.error(error)
-    }
-    /* -- */
 
     /* Set Filters */
-
-    let result;
-    try {
-      console.log('Add setFilterItems')
-      result = await setFilterItems(strapi);
-    } catch(error){
-      console.log('setFilterItems Error')
-      console.error(error)
-    }
-
-
-    if (result && infrData) {
-      const data = await setFilters(strapi, infrData, result);
-      if (data) {
-        await setTopFilterItems(strapi, infrData, data);
+    if (results.result && results.infrData) {
+      try {
+        console.log('Add setFilters');
+        const data = await setFilters(strapi, results.infrData, results.result);
+      
+        if (data) {
+          console.log('Add setTopFilterItems');
+          await setTopFilterItems(strapi, results.infrData, data);
+        }
+      } catch (error) {
+        console.log(`Set Filters Error`);
+        console.error(error);
       }
     }
   },
