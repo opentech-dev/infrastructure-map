@@ -138,7 +138,7 @@ Access to services is achieved through travel tickets, which **can mostly be pur
 const infrastructures_ro = [
   {
     locale: "ro",
-    order: 1,
+    order: 11,
     name: "Drumuri",
     slug: "roads",
     description: `Drumuri publice naționale - **5996 km**.
@@ -151,7 +151,7 @@ Prioritatea Guvernului este îmbunătățirea calității drumurilor publice na�
   },
   {
     locale: "ro",
-    order: 2,
+    order: 12,
     name: "Poduri",
     slug: "bridges",
     description: `Podurile sunt parte componentă a drumurilor care asigură continuitatea în cazul existenței unor obstacole (văi adânci, cursuri de apă etc.).
@@ -160,7 +160,7 @@ Prioritatea Guvernului este reconstrucția, consolidarea și construcția poduri
   },
   {
     locale: "ro",
-    order: 3,
+    order: 13,
     name: "Căi Ferate",
     slug: "railways",
     description: `Rețeaua de cale ferată a Republicii Moldova constituie 1.151 km de linii neelectrificate cu 90 de stații pentru servicii de marfă și călători, administrate de întreprinderea de stat „Calea Ferată din Moldova”.
@@ -176,7 +176,7 @@ Rețeaua feroviară moldovenească face parte din coridorul de transport trans-E
   },
   {
     locale: "ro",
-    order: 4,
+    order: 14,
     name: "Aeroporturi",
     slug: "airports",
     description: `### Aeroportul Internațional Chișinău  
@@ -199,7 +199,7 @@ Rețeaua feroviară moldovenească face parte din coridorul de transport trans-E
   },
   {
     locale: "ro",
-    order: 5,
+    order: 15,
     name: "Porturi și Căi Fluviale",
     slug: "ports_rivers",
     description: `### Portul de pasageri și mărfuri Giurgiulesti
@@ -225,7 +225,7 @@ Din care conform Acordului European cu privire la principalele căi navigabile i
   },
   {
     locale: "ro",
-    order: 6,
+    order: 16,
     name: "Dezvoltare Urbană",
     slug: "urban_development",
     description: `Factorul cel mai important care compromite dezvoltarea teritorială echilibrată a Republicii Moldova este determinat de gradul scăzut de urbanizare - 43% și o arhitectură urbană extrem de fragilă, caracterizată de 3 provocări majore:
@@ -244,7 +244,7 @@ Din care conform Acordului European cu privire la principalele căi navigabile i
   },
   {
     locale: "ro",
-    order: 7,
+    order: 17,
     name: "Transport",
     slug: "transportation",
     description: `În anul **2022** cu transportul public au fost transportați **246,4 milioane pasageri**, dintre care 40 % prin intermediul transportului rutier între principale orașe și municipii.  
@@ -259,7 +259,7 @@ Accesul la servicii este realizat prin intermediul biletelor de călătorie, car
   },
   {
     locale: "ro",
-    order: 8,
+    order: 18,
     name: "Apă și Salubrizare",
     slug: "water_sanitation",
     description: `- Doar 55 municipii și orașe, au acces la surse de apă, ceea ce reprezintă 61,7% din localităţile ţării;
