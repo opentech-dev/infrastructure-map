@@ -121,7 +121,7 @@ const CategoryDescription: React.ForwardRefRenderFunction<
         activeParam={activeParam}
         activeCategories={activeCategories as string[]}
         data={data}
-        icon={infrastructure?.attributes.icon.data.attributes.url}
+        icon={infrastructure?.attributes?.icon?.data?.attributes?.url}
       />
     </>
   );
