@@ -107,59 +107,135 @@ export const setTopFilterItems = async (
 
   if (!topFiltersCount) {
     // top filter
-    const tentCompliantEn = await Promise.all(
-      tentCompliantEN.map((item, i) =>
-        strapi.entityService.create("api::top-filter.top-filter", {
-          data: {
-            ...item,
-            infrastructure: infrastructures.engInfrastructures[0].id,
-          },
-          populate: ["infrastructure"],
-        })
-      )
-    );
+    // const tentCompliantEn = await Promise.all(
+    //   tentCompliantEN.map((item, i) =>
+    //     strapi.entityService.create("api::top-filter.top-filter", {
+    //       data: {
+    //         ...item,
+    //         infrastructure: infrastructures.engInfrastructures[0].id,
+    //       },
+    //       populate: ["infrastructure"],
+    //     })
+    //   )
+    // );
 
-    const tentCompliantRo = await Promise.all(
-      tentCompliantRO.map((item, i) =>
-        strapi.entityService.create("api::top-filter.top-filter", {
-          data: {
-            ...item,
-            infrastructure: infrastructures.roInfrastructures[0].id,
-            localizations: [tentCompliantEn[i].id],
-          },
-          populate: ["localizations", "infrastructure"],
-        })
-      )
-    );
+    const tentCompliantEn = await (async () => {
+      let data = [];
+
+      for (let item of tentCompliantEN) {
+        await strapi.entityService
+          .create("api::top-filter.top-filter", {
+            data: {
+              ...item,
+              infrastructure: infrastructures.engInfrastructures[0].id,
+            },
+            populate: ["infrastructure"],
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // const tentCompliantRo = await Promise.all(
+    //   tentCompliantRO.map((item, i) =>
+    //     strapi.entityService.create("api::top-filter.top-filter", {
+    //       data: {
+    //         ...item,
+    //         infrastructure: infrastructures.roInfrastructures[0].id,
+    //         localizations: [tentCompliantEn[i].id],
+    //       },
+    //       populate: ["localizations", "infrastructure"],
+    //     })
+    //   )
+    // );
+
+    const tentCompliantRo = await (async () => {
+      let data = [];
+
+      for (let [i, item] of tentCompliantRO.entries()) {
+        await strapi.entityService
+          .create("api::top-filter.top-filter", {
+            data: {
+              ...item,
+              infrastructure: infrastructures.roInfrastructures[0].id,
+              localizations: [tentCompliantEn[i].id],
+            },
+            populate: ["localizations", "infrastructure"],
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
     //
 
     // top filter items
-    const tentCompliantFiltersEn = await Promise.all(
-      tentCompliantItemsEN.map((item, i) =>
-        strapi.entityService.create("api::top-filter-item.top-filter-item", {
-          data: {
-            ...item,
-            filter: roads.roadsEn[i].id,
-            top_filter: tentCompliantEn[0].id,
-          },
-          populate: ["top_filter"],
-        })
-      )
-    );
+    // const tentCompliantFiltersEn = await Promise.all(
+    //   tentCompliantItemsEN.map((item, i) =>
+    //     strapi.entityService.create("api::top-filter-item.top-filter-item", {
+    //       data: {
+    //         ...item,
+    //         filter: roads.roadsEn[i].id,
+    //         top_filter: tentCompliantEn[0].id,
+    //       },
+    //       populate: ["top_filter"],
+    //     })
+    //   )
+    // );
 
-    const tentCompliantFiltersRo = await Promise.all(
-      tentCompliantItemsRO.map((item, i) =>
-        strapi.entityService.create("api::top-filter-item.top-filter-item", {
-          data: {
-            ...item,
-            top_filter: tentCompliantRo[0].id,
-            filter: roads.roadsRo[i].id,
-            localizations: [tentCompliantFiltersEn[i].id],
-          },
-          populate: ["localizations", "top_filter"],
-        })
-      )
-    );
+    const tentCompliantFiltersEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of tentCompliantItemsEN.entries()) {
+        await strapi.entityService
+          .create("api::top-filter-item.top-filter-item", {
+            data: {
+              ...item,
+              filter: roads.roadsEn[i].id,
+              top_filter: tentCompliantEn[0].id,
+            },
+            populate: ["top_filter"],
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // const tentCompliantFiltersRo = await Promise.all(
+    //   tentCompliantItemsRO.map((item, i) =>
+    //     strapi.entityService.create("api::top-filter-item.top-filter-item", {
+    //       data: {
+    //         ...item,
+    //         top_filter: tentCompliantRo[0].id,
+    //         filter: roads.roadsRo[i].id,
+    //         localizations: [tentCompliantFiltersEn[i].id],
+    //       },
+    //       populate: ["localizations", "top_filter"],
+    //     })
+    //   )
+    // );
+
+    const tentCompliantFiltersRo = await (async () => {
+      let data = [];
+
+      for (let [i, item] of tentCompliantItemsRO.entries()) {
+        await strapi.entityService
+          .create("api::top-filter-item.top-filter-item", {
+            data: {
+              ...item,
+              top_filter: tentCompliantRo[0].id,
+              filter: roads.roadsRo[i].id,
+              localizations: [tentCompliantFiltersEn[i].id],
+            },
+            populate: ["localizations", "top_filter"],
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
     //
   }
 };

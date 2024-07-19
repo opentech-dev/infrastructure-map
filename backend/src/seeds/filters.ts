@@ -531,7 +531,7 @@ export const setFilters = async (
     northernRegionRo,
     southernRegionRo,
     cahulDistrictRo,
-    falestiDistrictRo
+    falestiDistrictRo,
   } = filterItems.waterSanitation;
 
   const en_roads = [tntEn, ringRoadEn, highwayEn, republicanEn];
@@ -569,51 +569,133 @@ export const setFilters = async (
   const en_urbanD = [citiesEn];
   const ro_urbanD = [citiesRo];
 
-  const en_water = [centralRegionEn, northernRegionEn, falestiDistrictEn, southernRegionEn, cahulDistrictEn];
-  const ro_water = [centralRegionRo, northernRegionRo, falestiDistrictRo, southernRegionRo, cahulDistrictRo];
+  const en_water = [
+    centralRegionEn,
+    northernRegionEn,
+    falestiDistrictEn,
+    southernRegionEn,
+    cahulDistrictEn,
+  ];
+  const ro_water = [
+    centralRegionRo,
+    northernRegionRo,
+    falestiDistrictRo,
+    southernRegionRo,
+    cahulDistrictRo,
+  ];
 
   if (!filtersCount) {
-    const roadsEn = await Promise.all(
-      roadsFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_roads[i].map((item) => item.id),
-            infrastructure: engInfrastructures[0].id,
-          },
-        })
-      )
-    );
+    // const roadsEn = await Promise.all(
+    //   roadsFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_roads[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[0].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    const roadsRo = await Promise.all(
-      roadsFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: ro_roads[i].map((item) => item.id),
-            infrastructure: roInfrastructures[0].id,
-            localizations: [roadsEn[i].id],
-          },
-          populate: ["localizations"],
-        })
-      )
-    );
+    const roadsEn = await (async () => {
+      let data = [];
 
-    const bridgesEn = await Promise.all(
-      bridgesFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_bridges[i].map((item) => item.id),
-            infrastructure: engInfrastructures[1].id,
-          },
-        })
-      )
-    );
+      for (let [i, item] of roadsFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_roads[i].map((item) => item.id),
+              infrastructure: engInfrastructures[0].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
 
-    await Promise.all(
-      bridgesFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+      return data;
+    })();
+
+    // const roadsRo = await Promise.all(
+    //   roadsFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_roads[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[0].id,
+    //         localizations: [roadsEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    const roadsRo = await (async () => {
+      let data = [];
+
+      for (let [i, item] of roadsFiltersRO.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: ro_roads[i].map((item) => item.id),
+              infrastructure: roInfrastructures[0].id,
+              localizations: [roadsEn[i].id],
+            },
+            populate: ["localizations"],
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // const bridgesEn = await Promise.all(
+    //   bridgesFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_bridges[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[1].id,
+    //       },
+    //     })
+    //   )
+    // );
+
+    const bridgesEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of bridgesFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_bridges[i].map((item) => item.id),
+              infrastructure: engInfrastructures[1].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   bridgesFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_bridges[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[1].id,
+    //         localizations: [bridgesEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of bridgesFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_bridges[i].map((item) => item.id),
@@ -621,25 +703,57 @@ export const setFilters = async (
             localizations: [bridgesEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const railwaysEn = await Promise.all(
-      railwaysFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_railways[i].map((item) => item.id),
-            infrastructure: engInfrastructures[2].id,
-          },
-        })
-      )
-    );
+    // const railwaysEn = await Promise.all(
+    //   railwaysFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_railways[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[2].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      railwaysFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const railwaysEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of railwaysFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_railways[i].map((item) => item.id),
+              infrastructure: engInfrastructures[2].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   railwaysFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_railways[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[2].id,
+    //         localizations: [railwaysEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of railwaysFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_railways[i].map((item) => item.id),
@@ -647,25 +761,57 @@ export const setFilters = async (
             localizations: [railwaysEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const airportsEn = await Promise.all(
-      airportsFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_airports[i].map((item) => item.id),
-            infrastructure: engInfrastructures[3].id,
-          },
-        })
-      )
-    );
+    // const airportsEn = await Promise.all(
+    //   airportsFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_airports[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[3].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      airportsFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const airportsEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of airportsFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_airports[i].map((item) => item.id),
+              infrastructure: engInfrastructures[3].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   airportsFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_airports[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[3].id,
+    //         localizations: [airportsEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of airportsFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_airports[i].map((item) => item.id),
@@ -673,25 +819,57 @@ export const setFilters = async (
             localizations: [airportsEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const portsEn = await Promise.all(
-      portsFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_ports[i].map((item) => item.id),
-            infrastructure: engInfrastructures[4].id,
-          },
-        })
-      )
-    );
+    // const portsEn = await Promise.all(
+    //   portsFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_ports[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[4].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      portsFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const portsEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of portsFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_ports[i].map((item) => item.id),
+              infrastructure: engInfrastructures[4].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   portsFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_ports[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[4].id,
+    //         localizations: [portsEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of portsFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_ports[i].map((item) => item.id),
@@ -699,25 +877,57 @@ export const setFilters = async (
             localizations: [portsEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const urbanDEn = await Promise.all(
-      urbanDFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_urbanD[i].map((item) => item.id),
-            infrastructure: engInfrastructures[5].id,
-          },
-        })
-      )
-    );
+    // const urbanDEn = await Promise.all(
+    //   urbanDFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_urbanD[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[5].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      urbanDFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const urbanDEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of urbanDFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_urbanD[i].map((item) => item.id),
+              infrastructure: engInfrastructures[5].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   urbanDFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_urbanD[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[5].id,
+    //         localizations: [urbanDEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of urbanDFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_urbanD[i].map((item) => item.id),
@@ -725,25 +935,57 @@ export const setFilters = async (
             localizations: [urbanDEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const transportationEn = await Promise.all(
-      transportationFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_transpotation[i].map((item) => item.id),
-            infrastructure: engInfrastructures[6].id,
-          },
-        })
-      )
-    );
+    // const transportationEn = await Promise.all(
+    //   transportationFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_transpotation[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[6].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      transportationFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const transportationEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of transportationFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_transpotation[i].map((item) => item.id),
+              infrastructure: engInfrastructures[6].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   transportationFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_transpotation[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[6].id,
+    //         localizations: [transportationEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of transportationFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_transpotation[i].map((item) => item.id),
@@ -751,25 +993,57 @@ export const setFilters = async (
             localizations: [transportationEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
-    const waterEn = await Promise.all(
-      waterFiltersEN.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
-          data: {
-            ...item,
-            filter_items: en_water[i].map((item) => item.id),
-            infrastructure: engInfrastructures[7].id,
-          },
-        })
-      )
-    );
+    // const waterEn = await Promise.all(
+    //   waterFiltersEN.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: en_water[i].map((item) => item.id),
+    //         infrastructure: engInfrastructures[7].id,
+    //       },
+    //     })
+    //   )
+    // );
 
-    await Promise.all(
-      waterFiltersRO.map((item, i) =>
-        strapi.entityService.create("api::filter.filter", {
+    const waterEn = await (async () => {
+      let data = [];
+
+      for (let [i, item] of waterFiltersEN.entries()) {
+        await strapi.entityService
+          .create("api::filter.filter", {
+            data: {
+              ...item,
+              filter_items: en_water[i].map((item) => item.id),
+              infrastructure: engInfrastructures[7].id,
+            },
+          })
+          .then((item) => data.push(item));
+      }
+
+      return data;
+    })();
+
+    // await Promise.all(
+    //   waterFiltersRO.map((item, i) =>
+    //     strapi.entityService.create("api::filter.filter", {
+    //       data: {
+    //         ...item,
+    //         filter_items: ro_water[i].map((item) => item.id),
+    //         infrastructure: roInfrastructures[7].id,
+    //         localizations: [waterEn[i].id],
+    //       },
+    //       populate: ["localizations"],
+    //     })
+    //   )
+    // );
+
+    await (async () => {
+      for (let [i, item] of waterFiltersRO.entries()) {
+        await strapi.entityService.create("api::filter.filter", {
           data: {
             ...item,
             filter_items: ro_water[i].map((item) => item.id),
@@ -777,9 +1051,9 @@ export const setFilters = async (
             localizations: [waterEn[i].id],
           },
           populate: ["localizations"],
-        })
-      )
-    );
+        });
+      }
+    })();
 
     return {
       roadsEn,

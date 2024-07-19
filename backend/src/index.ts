@@ -26,15 +26,29 @@ export default {
    */
   async bootstrap({ strapi }: { strapi: Strapi }) {
     const tasks = [
-      { fn: addLocales, args: [strapi], message: 'Add Locales' },
-      { fn: setMapConfiguration, args: [strapi], message: 'Add setMapConfiguration' },
-      { fn: setMapLayout, args: [strapi], message: 'Add setMapLayout' },
-      { fn: setInfrastructures, args: [strapi], message: 'Add setInfrastructures', saveResult: 'infrData' },
-      { fn: setGlobalLayers, args: [strapi], message: 'Add setGlobalLayers' },
-      { fn: setFilterItems, args: [strapi], message: 'Add setFilterItems', saveResult: 'result' }
+      { fn: addLocales, args: [strapi], message: "Add Locales" },
+      {
+        fn: setMapConfiguration,
+        args: [strapi],
+        message: "Add setMapConfiguration",
+      },
+      { fn: setMapLayout, args: [strapi], message: "Add setMapLayout" },
+      {
+        fn: setInfrastructures,
+        args: [strapi],
+        message: "Add setInfrastructures",
+        saveResult: "infrData",
+      },
+      { fn: setGlobalLayers, args: [strapi], message: "Add setGlobalLayers" },
+      {
+        fn: setFilterItems,
+        args: [strapi],
+        message: "Add setFilterItems",
+        saveResult: "result",
+      },
     ];
 
-    const results: {result?:any, infrData?:any} = {};
+    const results: { result?: any; infrData?: any } = {};
 
     for (const task of tasks) {
       try {
@@ -49,14 +63,14 @@ export default {
       }
     }
 
-    /* Set Filters */
+    // /* Set Filters */
     if (results?.result && results.infrData) {
       try {
-        console.log('Add setFilters');
+        console.log("Add setFilters");
         const data = await setFilters(strapi, results.infrData, results.result);
-      
+
         if (data) {
-          console.log('Add setTopFilterItems');
+          console.log("Add setTopFilterItems");
           await setTopFilterItems(strapi, results.infrData, data);
         }
       } catch (error) {
